@@ -3,14 +3,14 @@ $(document).ready(function() {
     // test flag
     const test = false;
   
-    // get times from moment
+    // get dates
     const now = moment().format('MMMM Do YYYY');
   
-    // commented out for test in non-standard hours
+    // list hours
     let nowHour24 = moment().format('H');
     let nowHour12 = moment().format('h');
   
-    // set times for tesitng after hours
+    // times after hours
     if (test) {
       nowHour24 = 13;
       nowHour12 = 1;
@@ -19,31 +19,25 @@ $(document).ready(function() {
     let $dateHeading = $('#navbar-subtitle');
     $dateHeading.text(now);
     
-    // using font awesome icon https://fontawesome.com/license
-    // change description here - none
-    const saveIcon = "./images/save-regular.svg"; 
   
-    // Get stored todos from localStorage
-    // Parsing the JSON string to an object
+    // Get stored items from local storage
     let storedPlans = JSON.parse(localStorage.getItem("storedPlans"));
   
     if (test) { console.log(storedPlans); }
   
-    // If plans were retrieved from localStorage, update the plan array to it
+  
     if (storedPlans !== null) {
       planTextArr = storedPlans;
     } else {
-      // this should only occur on first time the app is loaded in the browser
-      // helpfully remind user that lunch is important
       planTextArr = new Array(9);
-      planTextArr[4] = "Picnic lunch outside";
+    
     }
   
-    if (test) { console.log("full array of plned text",planTextArr); }
+    if (test) { console.log("full array of plans",planTextArr); }
   
     // set variable referencing planner element
     let $plannerDiv = $('#plannerContainer');
-    // clear existing elements
+    // clear existing elements on new day
     $plannerDiv.empty();
   
     if (test) { console.log("current time",nowHour12); }
@@ -51,22 +45,19 @@ $(document).ready(function() {
   
     // build calendar by row for fix set of hours
     for (let hour = 9; hour <= 17; hour++) {
-      // index for array use offset from hour
+     
       let index = hour - 9;
       
-      // build row components
       let $rowDiv = $('<div>');
       $rowDiv.addClass('row');
       $rowDiv.addClass('plannerRow');
       $rowDiv.attr('hour-index',hour);
     
-      // Start building Time box portion of row
       let $col2TimeDiv = $('<div>');
       $col2TimeDiv.addClass('col-md-2');
     
-      // create timeBox element (contains time)
       const $timeBoxSpn = $('<span>');
-      // can use this to get value
+    
       $timeBoxSpn.attr('class','timeBox');
       
       // format hours for display
@@ -86,10 +77,9 @@ $(document).ready(function() {
       // insert into col inset into timebox
       $rowDiv.append($col2TimeDiv);
       $col2TimeDiv.append($timeBoxSpn);
-      // STOP building Time box portion of row
+    
   
-      // START building input portion of row
-      // build row components
+      // building input portion of row
       let $dailyPlanSpn = $('<input>');
   
       $dailyPlanSpn.attr('id',`input-${index}`);
@@ -97,19 +87,17 @@ $(document).ready(function() {
       $dailyPlanSpn.attr('type','text');
       $dailyPlanSpn.attr('class','dailyPlan');
   
-      // access index from data array for hour 
+      // array for hour 
       $dailyPlanSpn.val( planTextArr[index] );
       
-      // create col to control width
+      // col to control width
       let $col9IptDiv = $('<div>');
       $col9IptDiv.addClass('col-md-9');
-  
-      // add col width and row component to row
       $rowDiv.append($col9IptDiv);
       $col9IptDiv.append($dailyPlanSpn);
-      // STOP building Time box portion of row
+     
   
-      // START building save portion of row
+      // save portion of row
       let $col1SaveDiv = $('<div>');
       $col1SaveDiv.addClass('col-md-1');
   
@@ -118,7 +106,6 @@ $(document).ready(function() {
       $saveBtn.attr('save-id',index);
       $saveBtn.attr('class',"far fa-save saveIcon");
       
-      // add col width and row component to row
       $rowDiv.append($col1SaveDiv);
       $col1SaveDiv.append($saveBtn);
       // STOP building save portion of row
@@ -149,7 +136,6 @@ $(document).ready(function() {
     };
   
     // saves to local storage
-    // conclick function to listen for user clicks on plan area
     $(document).on('click','i', function(event) {
       event.preventDefault();  
   
